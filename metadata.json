@@ -1,0 +1,6 @@
+{
+  "name": "Service Selling Platform & Admin Panel",
+  "description": "Full-featured service selling platform with client portal, bKash/Nagad payment submission, user order tracking, review system, and a comprehensive admin management panel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
