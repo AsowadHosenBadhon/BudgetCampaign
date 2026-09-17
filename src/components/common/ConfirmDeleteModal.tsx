@@ -4,9 +4,11 @@ import { Trash2, AlertTriangle, X } from 'lucide-react';
 
 interface ConfirmDeleteModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  onCancel?: () => void;
   onConfirm: () => void;
   title?: string;
+  message?: string;
   itemName?: string;
   description?: string;
   confirmText?: string;
@@ -18,8 +20,10 @@ interface ConfirmDeleteModalProps {
 export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   isOpen,
   onClose,
+  onCancel,
   onConfirm,
   title = 'মুছে ফেলার নিশ্চিতকরণ',
+  message,
   itemName,
   description = 'আপনি কি নিশ্চিত যে আপনি এটি মুছে ফেলতে চান? এই প্রক্রিয়াটি পূর্বাবস্থায় ফিরিয়ে আনা যাবে না।',
   confirmText = 'হ্যাঁ, মুছে ফেলুন',
@@ -27,16 +31,26 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   dangerBadge = 'স্থায়ী পরিবর্তন',
   idPrefix = 'delete-confirm',
 }) => {
+  const handleClose = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    } else if (typeof onCancel === 'function') {
+      onCancel();
+    }
+  };
+
   // Close on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, onCancel]);
+
+  const displayDescription = message || description;
 
   return (
     <AnimatePresence>
@@ -44,7 +58,7 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
         <div
           id={`${idPrefix}-modal-backdrop`}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <motion.div
             id={`${idPrefix}-modal-card`}
@@ -84,8 +98,8 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
 
                 <button
                   id={`${idPrefix}-close-btn`}
-                  onClick={onClose}
-                  className="p-1.5 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  onClick={handleClose}
+                  className="p-1.5 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
                   aria-label="Close"
                 >
                   <X className="w-5 h-5" />
@@ -107,7 +121,7 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
                 id={`${idPrefix}-desc`}
                 className="mt-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
               >
-                {description}
+                {displayDescription}
               </p>
             </div>
 
@@ -116,8 +130,8 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
               <button
                 id={`${idPrefix}-cancel-btn`}
                 type="button"
-                onClick={onClose}
-                className="px-4 py-2.5 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors shadow-xs"
+                onClick={handleClose}
+                className="px-4 py-2.5 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors shadow-xs cursor-pointer"
               >
                 {cancelText}
               </button>
@@ -127,9 +141,9 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
                 type="button"
                 onClick={() => {
                   onConfirm();
-                  onClose();
+                  handleClose();
                 }}
-                className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 transition-colors flex items-center gap-1.5 shadow-sm shadow-rose-600/20"
+                className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 transition-colors flex items-center gap-1.5 shadow-sm shadow-rose-600/20 cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>{confirmText}</span>

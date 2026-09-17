@@ -21,6 +21,7 @@ const MainAppContent: React.FC = () => {
     isPurchaseAuthPromptOpen,
     selectedServiceForPurchase,
     selectedPostForDetail,
+    setSelectedPostForDetail,
     isDarkMode 
   } = useApp();
 
@@ -64,7 +65,12 @@ const MainAppContent: React.FC = () => {
       {isAuthModalOpen && <AuthModal />}
       {isPurchaseAuthPromptOpen && <PurchaseAuthPromptModal />}
       {selectedServiceForPurchase && <PurchaseModal />}
-      {selectedPostForDetail && <PostDetailModal />}
+      {selectedPostForDetail && (
+        <PostDetailModal
+          post={selectedPostForDetail}
+          onClose={() => setSelectedPostForDetail(null)}
+        />
+      )}
 
       {/* Toast Notifications */}
       <ToastContainer />

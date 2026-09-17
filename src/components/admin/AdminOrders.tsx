@@ -726,6 +726,7 @@ export const AdminOrders: React.FC = () => {
             deleteOrder(orderToDelete.id);
             setOrderToDelete(null);
           }}
+          onClose={() => setOrderToDelete(null)}
           onCancel={() => setOrderToDelete(null)}
         />
       )}

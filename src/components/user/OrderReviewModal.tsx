@@ -5,7 +5,7 @@ import { Order } from '../../types';
 
 interface OrderReviewModalProps {
   order: Order;
-  onClose: () => void;
+  onClose?: () => void;
   existingReview?: {
     rating: number;
     comment: string;
@@ -19,6 +19,12 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
   onClose,
   existingReview,
 }) => {
+  const handleClose = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+  };
+
   const { addReview, showToast } = useApp();
   const [rating, setRating] = useState<number>(existingReview?.rating || 5);
   const [hoverRating, setHoverRating] = useState<number>(0);
@@ -42,7 +48,7 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
     });
 
     setIsSubmitting(false);
-    onClose();
+    handleClose();
   };
 
   const ratingDescriptions: Record<number, string> = {
@@ -75,8 +81,8 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
             </div>
           </div>
           <button
-            onClick={onClose}
-            className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={handleClose}
+            className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -140,8 +146,8 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
             <div className="flex justify-end pt-2">
               <button
                 type="button"
-                onClick={onClose}
-                className="w-full sm:w-auto px-6 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold rounded-xl text-xs transition-colors"
+                onClick={handleClose}
+                className="w-full sm:w-auto px-6 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold rounded-xl text-xs transition-colors cursor-pointer"
               >
                 ঠিক আছে
               </button>
@@ -205,7 +211,7 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100 dark:border-gray-800">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="px-4 py-2 text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors cursor-pointer"
               >
                 বাতিল

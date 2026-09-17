@@ -944,6 +944,7 @@ export const AdminProducts: React.FC = () => {
             deleteService(serviceToDelete.id);
             setServiceToDelete(null);
           }}
+          onClose={() => setServiceToDelete(null)}
           onCancel={() => setServiceToDelete(null)}
         />
       )}

@@ -8,10 +8,16 @@ import { Order, CustomFormField } from '../../types';
 
 interface OrderFormModalProps {
   order: Order;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const OrderFormModal: React.FC<OrderFormModalProps> = ({ order, onClose }) => {
+  const handleClose = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+  };
+
   const { services, submitOrderForm } = useApp();
 
   // Find corresponding service
@@ -108,7 +114,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({ order, onClose }
     try {
       submitOrderForm(order.id, formValues);
       setIsSubmitting(false);
-      onClose();
+      handleClose();
     } catch (err: any) {
       setErrorMsg('ফর্ম সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
       setIsSubmitting(false);
@@ -116,7 +122,10 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({ order, onClose }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={handleClose}
+    >
       <div 
         className="w-full max-w-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
@@ -141,8 +150,8 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({ order, onClose }
           </div>
 
           <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/80 dark:bg-gray-700/80 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:text-gray-300 transition-colors"
+            onClick={handleClose}
+            className="w-8 h-8 rounded-full bg-white/80 dark:bg-gray-700/80 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:text-gray-300 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -287,8 +296,8 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({ order, onClose }
           <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-end gap-3">
             <button
               type="button"
-              onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              onClick={handleClose}
+              className="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
             >
               বাতিল
             </button>

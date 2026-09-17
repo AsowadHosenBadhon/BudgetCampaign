@@ -3,23 +3,32 @@ import { X, Calendar, Clock, Eye, Heart, Share2 } from 'lucide-react';
 import { Post } from '../../types';
 
 interface PostDetailModalProps {
-  post: Post | null;
-  onClose: () => void;
+  post?: Post | null;
+  onClose?: () => void;
 }
 
 export const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, onClose }) => {
   if (!post) return null;
 
+  const handleClose = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200"
+      onClick={handleClose}
+    >
       <div 
         className="relative w-full max-w-2xl my-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
+          onClick={handleClose}
+          className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -79,8 +88,8 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, onClose 
             </button>
           </div>
           <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg text-xs font-semibold"
+            onClick={handleClose}
+            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg text-xs font-semibold cursor-pointer"
           >
             বন্ধ করুন
           </button>

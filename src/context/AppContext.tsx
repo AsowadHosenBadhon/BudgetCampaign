@@ -100,6 +100,8 @@ interface AppContextType {
   // Modals & UI
   selectedServiceForPurchase: Service | null;
   setSelectedServiceForPurchase: (srv: Service | null) => void;
+  selectedPostForDetail: Post | null;
+  setSelectedPostForDetail: (post: Post | null) => void;
   initiatePurchase: (service: Service) => void;
   promptServiceForPurchase: Service | null;
   setPromptServiceForPurchase: (srv: Service | null) => void;
@@ -181,6 +183,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Purchase modal
   const [selectedServiceForPurchase, setSelectedServiceForPurchase] = useState<Service | null>(null);
+  const [selectedPostForDetail, setSelectedPostForDetail] = useState<Post | null>(null);
   const [promptServiceForPurchase, setPromptServiceForPurchase] = useState<Service | null>(null);
   const [isPurchaseAuthPromptOpen, setIsPurchaseAuthPromptOpen] = useState<boolean>(false);
 
@@ -873,6 +876,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteReview,
         selectedServiceForPurchase,
         setSelectedServiceForPurchase,
+        selectedPostForDetail,
+        setSelectedPostForDetail,
         initiatePurchase,
         promptServiceForPurchase,
         setPromptServiceForPurchase,
